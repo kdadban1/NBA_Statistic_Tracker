@@ -24,9 +24,10 @@ public class FrontEnd extends JPanel {
 	private JTextField textField; // Text field for user input
 	private boolean showText;
 	private String playerName;
-	private BufferedImage teamImage; // To hold the team logo
-	private BufferedImage buttonImage; // To hold the team logo
+	private String mainStat = "100";
+	private BufferedImage fImage; // To hold the image
 	private HashMap<String, Rectangle> buttons; // Store buttons with their bounds
+	private HashMap<String, Integer> nums;
 	public FrontEnd() {
 		setLayout(null);
 		setBackground(new Color(21, 24, 44)); // Set the background color
@@ -74,6 +75,27 @@ public class FrontEnd extends JPanel {
 		buttons.put("oreb", new Rectangle(780, 680, 155, 58));
 		buttons.put("dreb", new Rectangle(780, 755, 155, 58));
 		buttons.put("return", new Rectangle(20, 30, 180, 100));
+		nums = new HashMap<>();
+		nums.put("m1n", 4);
+		nums.put("pts", 5);
+		nums.put("fgm", 6);
+		nums.put("fga", 7);
+		nums.put("fg_", 8);
+		nums.put("3pm", 9);
+		nums.put("3pa", 10);
+		nums.put("3p_", 11);
+		nums.put("ftm", 12);
+		nums.put("fta", 13);
+		nums.put("ft_", 14);
+		nums.put("gp", 3);
+		nums.put("reb", 17);
+		nums.put("ast", 18);
+		nums.put("stl", 19);
+		nums.put("blk", 20);
+		nums.put("tov", 21);
+		nums.put("eff", 22);
+		nums.put("oreb", 15);
+		nums.put("dreb", 16);
 		// Add mouse listener to handle button clicks
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -99,9 +121,11 @@ public class FrontEnd extends JPanel {
 		});
 	}
 	// Method to display stat corresponding to the clicked button
-	private void displayStat(String button) {
-		// USE A SCANNER TO FIND THE STAT
-		System.out.println("Button clicked: " + button);
+	private String displayStat(String button) {
+		System.out.println(getStat(playerName, nums.get(button)));
+		String a = getStat(playerName, nums.get(button));
+		mainStat = a;
+		return a;
 	}
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -111,10 +135,12 @@ public class FrontEnd extends JPanel {
 		Color c = new Color(44, 49, 91);
 		g2.setColor(c);
 		if (showText == false) {
-			// Text
+			// front page
 			Font font = new Font("SansSerif", Font.BOLD, 60);
 			g2.setFont(font);
 			g2.drawString("Enter NBA Player Here", 180, 190);
+			loadImage("nbalogo");
+			g2.drawImage(fImage, 340, 400, this);
 		}
 		// if the user has entered a name, show it
 		if (playerName != null) {
@@ -133,50 +159,53 @@ public class FrontEnd extends JPanel {
 			// if that player exists, load their team and stats
 			if (checkPlayer(playerName)) {
 				String team = getTeam(playerName);
-				loadTeamImage(team);
-				g2.drawImage(teamImage, (getWidth() - teamImage.getWidth()) / 2, 200, this);
-				loadButton("m1n");
-				g2.drawImage(buttonImage, 60, 305, this);
-				loadButton("pts");
-				g2.drawImage(buttonImage, 60, 380, this);
-				loadButton("fgm");
-				g2.drawImage(buttonImage, 60, 455, this);
-				loadButton("fga");
-				g2.drawImage(buttonImage, 60, 530, this);
-				loadButton("fg");
-				g2.drawImage(buttonImage, 60, 605, this);
-				loadButton("3pm");
-				g2.drawImage(buttonImage, 60, 680, this);
-				loadButton("3pa");
-				g2.drawImage(buttonImage, 60, 755, this);
-				loadButton("3p_");
-				g2.drawImage(buttonImage, 240, 680, this);
-				loadButton("ftm");
-				g2.drawImage(buttonImage, 240, 755, this);
-				loadButton("fta");
-				g2.drawImage(buttonImage, 420, 680, this);
-				loadButton("ft_");
-				g2.drawImage(buttonImage, 420, 755, this);
-				loadButton("gp");
-				g2.drawImage(buttonImage, 600, 680, this);
-				loadButton("reb");
-				g2.drawImage(buttonImage, 600, 755, this);
-				loadButton("ast");
-				g2.drawImage(buttonImage, 780, 305, this);
-				loadButton("stl");
-				g2.drawImage(buttonImage, 780, 380, this);
-				loadButton("blk");
-				g2.drawImage(buttonImage, 780, 455, this);
-				loadButton("tov");
-				g2.drawImage(buttonImage, 780, 530, this);
-				loadButton("eff");
-				g2.drawImage(buttonImage, 780, 605, this);
-				loadButton("oreb");
-				g2.drawImage(buttonImage, 780, 680, this);
-				loadButton("dreb");
-				g2.drawImage(buttonImage, 780, 755, this);
-				loadButton("return");
-				g2.drawImage(buttonImage, -140, -170, this);
+				loadImage(team);
+				g2.drawImage(fImage, (getWidth() - fImage.getWidth()) / 2, 200, this);
+				loadImage("m1n");
+				g2.drawImage(fImage, 60, 305, this);
+				loadImage("pts");
+				g2.drawImage(fImage, 60, 380, this);
+				loadImage("fgm");
+				g2.drawImage(fImage, 60, 455, this);
+				loadImage("fga");
+				g2.drawImage(fImage, 60, 530, this);
+				loadImage("fg");
+				g2.drawImage(fImage, 60, 605, this);
+				loadImage("3pm");
+				g2.drawImage(fImage, 60, 680, this);
+				loadImage("3pa");
+				g2.drawImage(fImage, 60, 755, this);
+				loadImage("3p_");
+				g2.drawImage(fImage, 240, 680, this);
+				loadImage("ftm");
+				g2.drawImage(fImage, 240, 755, this);
+				loadImage("fta");
+				g2.drawImage(fImage, 420, 680, this);
+				loadImage("ft_");
+				g2.drawImage(fImage, 420, 755, this);
+				loadImage("gp");
+				g2.drawImage(fImage, 600, 680, this);
+				loadImage("reb");
+				g2.drawImage(fImage, 600, 755, this);
+				loadImage("ast");
+				g2.drawImage(fImage, 780, 305, this);
+				loadImage("stl");
+				g2.drawImage(fImage, 780, 380, this);
+				loadImage("blk");
+				g2.drawImage(fImage, 780, 455, this);
+				loadImage("tov");
+				g2.drawImage(fImage, 780, 530, this);
+				loadImage("eff");
+				g2.drawImage(fImage, 780, 605, this);
+				loadImage("oreb");
+				g2.drawImage(fImage, 780, 680, this);
+				loadImage("dreb");
+				g2.drawImage(fImage, 780, 755, this);
+				loadImage("return");
+				g2.drawImage(fImage, -140, -170, this);
+				
+				g2.drawString(mainStat, x, 150);
+				
 			}
 			// else, the player does not exist
 			else {
@@ -184,24 +213,17 @@ public class FrontEnd extends JPanel {
 				textWidth = g2.getFontMetrics().stringWidth(noPlayer); // Calculate the width of the text
 				x = (getWidth() - textWidth) / 2;
 				g2.drawString(noPlayer, x, 400);
+				loadImage("return");
+				g2.drawImage(fImage, -140, -170, this);
 			}
 		}
 	}
-	private void loadTeamImage(String team) {
+	private void loadImage(String input) {
 		try {
-			teamImage = ImageIO.read(new File("src/images/" + team + ".png")); // Adjust the path and format as needed
+			fImage = ImageIO.read(new File("src/images/" + input + ".png")); // Adjust the path and format as needed
 		} catch (IOException e) {
 			System.err.println("Image Unavailable");
-			teamImage = null;
-		}
-	}
-	private void loadButton(String button) {
-		try {
-			buttonImage = ImageIO.read(new File("src/images/" + button + ".png")); // Adjust the path and format as
-																					// needed
-		} catch (IOException e) {
-			System.err.println("Image Unavailable");
-			buttonImage = null;
+			fImage = null;
 		}
 	}
 	public boolean checkPlayer(String playerName) {
@@ -238,6 +260,26 @@ public class FrontEnd extends JPanel {
 			}
 			scanner.close(); // Close the scanner if the player is not found
 			return team;
+		} catch (FileNotFoundException e) {
+			System.err.println("Error");
+			return null;
+		}
+	}
+	public String getStat(String playerName, int num) {
+		try {
+			Scanner scanner = new Scanner(new File("NBA STAT REAL - Sheet1.csv"));
+			String stat = null;
+			while (scanner.hasNextLine()) {
+				String[] row = scanner.nextLine().split(","); // Split by commas
+				// lowercase and trim name
+				String player = row[1].trim().toLowerCase();
+				if (player.equals(playerName.toLowerCase())) { // find the player
+					stat = row[num]; // get stat
+					return stat;
+				}
+			}
+			scanner.close(); // Close the scanner if the player is not found
+			return stat;
 		} catch (FileNotFoundException e) {
 			System.err.println("Error");
 			return null;
