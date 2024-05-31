@@ -73,6 +73,7 @@ public class FrontEnd extends JPanel {
 		buttons.put("eff", new Rectangle(780, 605, 155, 58));
 		buttons.put("oreb", new Rectangle(780, 680, 155, 58));
 		buttons.put("dreb", new Rectangle(780, 755, 155, 58));
+		buttons.put("return", new Rectangle(20, 30, 180, 100));
 		// Add mouse listener to handle button clicks
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -82,8 +83,16 @@ public class FrontEnd extends JPanel {
 					Rectangle bounds = buttons.get(button);
 					if (bounds.contains(e.getPoint())) {
 						// display the stat corresponding to the clicked button
-						displayStat(button);
-						break;
+						if (button.equals("return")) {
+							playerName = null;
+							removeAll();
+							repaint();
+							showText = false;
+							add(textField);
+						} else {
+							displayStat(button);
+							break;
+						}
 					}
 				}
 			}
@@ -91,7 +100,7 @@ public class FrontEnd extends JPanel {
 	}
 	// Method to display stat corresponding to the clicked button
 	private void displayStat(String button) {
-		//USE A SCANNER TO FIND THE STAT
+		// USE A SCANNER TO FIND THE STAT
 		System.out.println("Button clicked: " + button);
 	}
 	@Override
@@ -115,6 +124,12 @@ public class FrontEnd extends JPanel {
 			int textWidth = g2.getFontMetrics().stringWidth(playerName); // Calculate the width of the text
 			int x = (getWidth() - textWidth) / 2; // Calculate the X coordinate to center the text horizontally
 			g2.drawString(playerName, x, 100); // Draw the text centered horizontally
+//			// Draw rectangles
+//			g2.setColor(Color.RED); // Set the color of the rectangles
+//			for (String button : buttons.keySet()) {
+//				Rectangle bounds = buttons.get(button);
+//				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+//			}
 			// if that player exists, load their team and stats
 			if (checkPlayer(playerName)) {
 				String team = getTeam(playerName);
@@ -160,6 +175,8 @@ public class FrontEnd extends JPanel {
 				g2.drawImage(buttonImage, 780, 680, this);
 				loadButton("dreb");
 				g2.drawImage(buttonImage, 780, 755, this);
+				loadButton("return");
+				g2.drawImage(buttonImage, -140, -170, this);
 			}
 			// else, the player does not exist
 			else {
