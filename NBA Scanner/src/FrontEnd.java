@@ -38,12 +38,12 @@ public class FrontEnd extends JPanel {
 		textField = new JTextField();
 		textField.setBounds(340, 300, 320, 40); // Set position and size of the text field
 		textField.setHorizontalAlignment(JTextField.CENTER); // Center text horizontally
-		Color textColor = new Color(255, 255, 255);
-		textField.setForeground(textColor);
-		textField.setCaretColor(Color.WHITE);
-		textField.setBackground(new Color(44, 49, 91));
-		// if enter is pressed, new page
-		// ActionListener for the textField
+		Color textColor = new Color(255, 255, 255); // text color
+		textField.setForeground(textColor); // set the text color
+		textField.setCaretColor(Color.WHITE); // set the caret color
+		textField.setBackground(new Color(44, 49, 91)); // set the background color
+		// if enter is pressed, change the page to compare or stat page using
+		// handleTextFieldAction method
 		textField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -61,16 +61,16 @@ public class FrontEnd extends JPanel {
 			}
 		});
 	}
-	// change the page if its one player or two
+	// method to change the page if its one player or two
 	private void handleTextFieldAction() {
-		if (!comparePlayer) {
+		if (!comparePlayer) { //this is the stats page, get the name of the first player
 			playerNameOne = textField.getText().trim();
 			showText = true;
 			comparePage = false;
 			remove(textField);
 			revalidate();
 			repaint();
-		} else {
+		} else { //this is the compare page, get the names of the players and show them
 			playerNameOne = textField.getText().trim();
 			playerNameTwo = compareTextField.getText().trim();
 			comparePage = true;
@@ -233,7 +233,7 @@ public class FrontEnd extends JPanel {
 			g2.drawImage(fImage, 600, 680, this);
 			loadImage("reb");
 			g2.drawImage(fImage, 600, 755, this);
-			loadImage("ast");
+			loadImage("ast");//
 			g2.drawImage(fImage, 780, 305, this);
 			loadImage("stl");
 			g2.drawImage(fImage, 780, 380, this);
@@ -473,7 +473,7 @@ public class FrontEnd extends JPanel {
 				}
 			}
 			scanner.close(); // Close the scanner if the player is not found
-			return stat; 
+			return stat;
 		} catch (FileNotFoundException e) {
 			System.err.println("Error");
 			return null;
