@@ -22,9 +22,12 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 public class FrontEnd extends JPanel {
 	private JTextField textField;
+	private JTextField compareTextField;
 	private boolean showText;
 	private boolean comparePlayer;
-	private String playerName;
+	private boolean comparePage;
+	private String playerNameOne;
+	private String playerNameTwo;
 	private String mainStat = "STAT";
 	private BufferedImage fImage; // To hold the image
 	private HashMap<String, Rectangle> buttons; // Store buttons with their bounds
@@ -46,10 +49,20 @@ public class FrontEnd extends JPanel {
 		textField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				playerName = textField.getText().trim(); // Get user input from text field
-				removeAll();
-				showText = true;
-				repaint();
+				if (!comparePlayer) {
+					playerNameOne = textField.getText().trim();
+					removeAll();
+					showText = true;
+					revalidate();
+					repaint();
+				} else {
+					playerNameOne = textField.getText().trim();
+					playerNameTwo = compareTextField.getText().trim();
+					removeAll();
+					comparePage = true;
+					revalidate();
+					repaint();
+				}
 			}
 		});
 		add(textField);
@@ -57,40 +70,38 @@ public class FrontEnd extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// Check if the mouse click falls within any button bounds
-				if (showText == true || comparePlayer == true) {
 				for (String button : buttons.keySet()) {
 					Rectangle bounds = buttons.get(button);
 					if (bounds.contains(e.getPoint())) {
-						// display the stat corresponding to the clicked button
-						if (button.equals("return")) {
-							playerName = null;
-							removeAll();
+						if (button.equals("compare")) {
+							comparePlayer = true;
+							compareTextField = new JTextField();
+							compareTextField.setBounds(340, 350, 320, 40);
+							compareTextField.setHorizontalAlignment(JTextField.CENTER);
+							compareTextField.setForeground(textColor);
+							compareTextField.setCaretColor(Color.WHITE);
+							compareTextField.setBackground(new Color(44, 49, 91));
+							add(compareTextField);
+							revalidate();
 							repaint();
+						} else if (button.equals("return")) {
+							playerNameOne = null;
+							removeAll();
 							showText = false;
 							add(textField);
 							mainStat = "STAT";
 							comparePlayer = false;
-						} else if (button.equals("compare")) {
-							comparePlayer = true;
-							textField.setBounds(340, 500, 320, 40);
-							add(textField);
-							
+							revalidate();
+							repaint();
 						} else {
-							displayStat(button);
-							break;
+							String a = getStat(playerNameOne, nums.get(button));
+							mainStat = a;
+							repaint();
 						}
 					}
 				}
-				}
 			}
 		});
-	}
-	// Method to display stat corresponding to the clicked button
-	private void displayStat(String button) {
-		String a = getStat(playerName, nums.get(button));
-		mainStat = a; // Update the mainStat
-		repaint(); // Request the panel to repaint itself
 	}
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -101,8 +112,8 @@ public class FrontEnd extends JPanel {
 		g2.setColor(c);
 		nums = new HashMap<>();
 		buttons = new HashMap<>();
-		//FRONT PAGE
-		if (showText == false) {
+		// FRONT PAGE
+		if (!showText) {
 			Font font = new Font("SansSerif", Font.BOLD, 60);
 			g2.setFont(font);
 			g2.drawString("Enter NBA Player Here", 180, 190);
@@ -110,25 +121,25 @@ public class FrontEnd extends JPanel {
 			g2.drawImage(fImage, 340, 350, this);
 			loadImage("compare");
 			g2.drawImage(fImage, 355, 650, this);
-			buttons.put("compare", new Rectangle(350, 650, 310, 90));
-			//DEBUG MODE
-			g2.setColor(Color.RED); // Set the color of the rectangles
+			buttons.put("compare", new Rectangle(355, 650, 310, 90));
+			// DEBUG MODE
+			g2.setColor(Color.RED);
 			for (String button : buttons.keySet()) {
 				Rectangle bounds = buttons.get(button);
 				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 			}
+			// END
 		}
-		//PAGE WITH ONE PLAYER
-		if (showText == true) {
+		// PAGE WITH ONE PLAYER
+		if (showText) {
 			Font font = new Font("SansSerif", Font.BOLD, 60);
 			g2.setFont(font);
-			int textWidth = g2.getFontMetrics().stringWidth(playerName.toUpperCase());
+			int textWidth = g2.getFontMetrics().stringWidth(playerNameOne.toUpperCase());
 			int x = (getWidth() - textWidth) / 2;
-			g2.drawString(playerName.toUpperCase(), x, 100);
+			g2.drawString(playerNameOne.toUpperCase(), x, 100);
 			// if player exists
-			if (checkPlayer(playerName) && comparePlayer == false) {
-				//bounds of each button
-				
+			if (checkPlayer(playerNameOne) && !comparePlayer) {
+				// bounds of each button
 				buttons.put("m1n", new Rectangle(60, 305, 155, 58));
 				buttons.put("pts", new Rectangle(60, 380, 155, 58));
 				buttons.put("fgm", new Rectangle(60, 455, 155, 58));
@@ -150,9 +161,14 @@ public class FrontEnd extends JPanel {
 				buttons.put("oreb", new Rectangle(780, 680, 155, 58));
 				buttons.put("dreb", new Rectangle(780, 755, 155, 58));
 				buttons.put("return", new Rectangle(20, 30, 180, 100));
-				
-				//link the string to the stat
-				
+				// DEBUG MODE: Drawing red rectangles around buttons
+				g2.setColor(Color.RED);
+				for (String button : buttons.keySet()) {
+					Rectangle bounds = buttons.get(button);
+					g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+				}
+				// END DEBUG MODE
+				// link the string to the stat
 				nums.put("m1n", 4);
 				nums.put("pts", 5);
 				nums.put("fgm", 6);
@@ -173,10 +189,8 @@ public class FrontEnd extends JPanel {
 				nums.put("eff", 22);
 				nums.put("oreb", 15);
 				nums.put("dreb", 16);
-				
-				
-				//load the buttons and team
-				String team = getTeam(playerName);
+				// load the buttons and team
+				String team = getTeam(playerNameOne);
 				loadImage(team);
 				g2.drawImage(fImage, (getWidth() - fImage.getWidth()) / 2, 200, this);
 				loadImage("m1n");
@@ -221,13 +235,14 @@ public class FrontEnd extends JPanel {
 				g2.drawImage(fImage, 780, 755, this);
 				loadImage("return");
 				g2.drawImage(fImage, -140, -170, this);
-				
-				//display the stat
+				// display the stat
 				textWidth = g2.getFontMetrics().stringWidth(mainStat);
 				x = (getWidth() - textWidth) / 2;
 				g2.drawString(mainStat, x, 175);
-			} else if (comparePlayer) {
-				//COMPARE PAGE
+			} else if (comparePage && checkPlayer(playerNameOne) && checkPlayer(playerNameTwo)) {
+				loadImage("return");
+				g2.drawImage(fImage, -140, -170, this);
+				buttons.put("return", new Rectangle(20, 30, 180, 100));
 			}
 			// else, the player does not exist
 			else {
@@ -237,6 +252,7 @@ public class FrontEnd extends JPanel {
 				g2.drawString(noPlayer, x, 400);
 				loadImage("return");
 				g2.drawImage(fImage, -140, -170, this);
+				buttons.put("return", new Rectangle(20, 30, 180, 100));
 			}
 		}
 	}
