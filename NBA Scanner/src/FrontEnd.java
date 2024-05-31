@@ -114,7 +114,7 @@ public class FrontEnd extends JPanel {
 					comparePage = false;
 					revalidate();
 					repaint();
-				} else {
+				} else if (!comparePlayer) {
 					String a = getStat(playerNameOne, nums.get(button));
 					mainStat = a;
 					if (comparePlayer) {
@@ -384,12 +384,12 @@ public class FrontEnd extends JPanel {
 			loadImage("dreb");
 			g2.drawImage(fImage, 780, 755, this);
 			loadImage("return");
-			// DEBUG MODE: Drawing red rectangles around buttons
-			g2.setColor(Color.RED);
-			for (String button : buttons.keySet()) {
-				Rectangle bounds = buttons.get(button);
-				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-			}
+//			// DEBUG MODE: Drawing red rectangles around buttons
+//			g2.setColor(Color.RED);
+//			for (String button : buttons.keySet()) {
+//				Rectangle bounds = buttons.get(button);
+//				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+//			}
 //			// END DEBUG MODE
 		}
 		// ERROR PAGE
