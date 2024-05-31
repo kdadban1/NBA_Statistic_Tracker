@@ -473,7 +473,7 @@ public class FrontEnd extends JPanel {
 				}
 			}
 			scanner.close(); // Close the scanner if the player is not found
-			return stat;
+			return stat; 
 		} catch (FileNotFoundException e) {
 			System.err.println("Error");
 			return null;
