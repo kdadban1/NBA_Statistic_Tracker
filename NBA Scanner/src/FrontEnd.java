@@ -87,22 +87,25 @@ public class FrontEnd extends JPanel {
 			Rectangle bounds = buttons.get(button);
 			if (bounds.contains(e.getPoint())) {
 				if (button.equals("compare") && !comparePlayer) {
-					comparePlayer = true;
-					compareTextField = new JTextField();
-					compareTextField.setBounds(340, 350, 320, 40);
-					compareTextField.setHorizontalAlignment(JTextField.CENTER);
-					compareTextField.setForeground(new Color(255, 255, 255));
-					compareTextField.setCaretColor(Color.WHITE);
-					compareTextField.setBackground(new Color(44, 49, 91));
-					compareTextField.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							handleTextFieldAction();
-						}
-					});
-					add(compareTextField);
-					revalidate();
-					repaint();
+					// Check if compareTextField is already present
+					if (compareTextField == null) {
+						comparePlayer = true;
+						compareTextField = new JTextField();
+						compareTextField.setBounds(340, 350, 320, 40);
+						compareTextField.setHorizontalAlignment(JTextField.CENTER);
+						compareTextField.setForeground(new Color(255, 255, 255));
+						compareTextField.setCaretColor(Color.WHITE);
+						compareTextField.setBackground(new Color(44, 49, 91));
+						compareTextField.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								handleTextFieldAction();
+							}
+						});
+						add(compareTextField);
+						revalidate();
+						repaint();
+					}
 				} else if (button.equals("return")) {
 					playerNameOne = null;
 					removeAll();
@@ -112,16 +115,20 @@ public class FrontEnd extends JPanel {
 					otherStat = "STAT";
 					comparePlayer = false;
 					comparePage = false;
+					compareTextField = null;
 					revalidate();
 					repaint();
-				} else if (!comparePlayer) {
-					String a = getStat(playerNameOne, nums.get(button));
-					mainStat = a;
-					if (comparePlayer) {
-						String b = getStat(playerNameTwo, nums.get(button));
-						otherStat = b;
+				} else {
+					Integer statIndex = nums.get(button);
+					if (statIndex != null) {
+						String a = getStat(playerNameOne, statIndex);
+						mainStat = a;
+						if (comparePlayer) {
+							String b = getStat(playerNameTwo, statIndex);
+							otherStat = b;
+						}
+						repaint();
 					}
-					repaint();
 				}
 			}
 		}
@@ -376,7 +383,7 @@ public class FrontEnd extends JPanel {
 			loadImage("blk");
 			g2.drawImage(fImage, 420, 605, this);
 			loadImage("tov");
-			g2.drawImage(fImage, 600,605, this);
+			g2.drawImage(fImage, 600, 605, this);
 			loadImage("eff");
 			g2.drawImage(fImage, 780, 605, this);
 			loadImage("oreb");
@@ -390,7 +397,7 @@ public class FrontEnd extends JPanel {
 //				Rectangle bounds = buttons.get(button);
 //				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 //			}
-//			// END DEBUG MODE
+////			// END DEBUG MODE
 		}
 		// ERROR PAGE
 		else {
