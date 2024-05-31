@@ -64,7 +64,7 @@ public class FrontEnd extends JPanel {
 		buttons.put("3p_", new Rectangle(240, 680, 155, 58));
 		buttons.put("ftm", new Rectangle(240, 755, 155, 58));
 		buttons.put("fta", new Rectangle(420, 680, 155, 58));
-		buttons.put("ft_", new Rectangle(420, 755, 155, 58));
+		buttons.put("ft_", new Rectangle(420, 755, 155, 58)); 
 		buttons.put("gp", new Rectangle(600, 680, 155, 58));
 		buttons.put("reb", new Rectangle(600, 755, 155, 58));
 		buttons.put("ast", new Rectangle(780, 305, 155, 58));
