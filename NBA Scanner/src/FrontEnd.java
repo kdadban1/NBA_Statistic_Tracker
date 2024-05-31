@@ -20,11 +20,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-
-
 public class FrontEnd extends JPanel {
 	private JTextField textField; // Text field for user input
 	private boolean showText;
+	private boolean comparePlayer;
 	private String playerName;
 	private String mainStat = "STAT";
 	private BufferedImage fImage; // To hold the image
@@ -77,6 +76,7 @@ public class FrontEnd extends JPanel {
 		buttons.put("oreb", new Rectangle(780, 680, 155, 58));
 		buttons.put("dreb", new Rectangle(780, 755, 155, 58));
 		buttons.put("return", new Rectangle(20, 30, 180, 100));
+		buttons.put("compare", new Rectangle(340, 700, 200, 100));
 		nums = new HashMap<>();
 		nums.put("m1n", 4);
 		nums.put("pts", 5);
@@ -114,6 +114,8 @@ public class FrontEnd extends JPanel {
 							showText = false;
 							add(textField);
 							mainStat = "STAT";
+						} else if (button.equals("compare")) {
+							comparePlayer = true;
 						} else {
 							displayStat(button);
 							break;
@@ -142,14 +144,21 @@ public class FrontEnd extends JPanel {
 			g2.setFont(font);
 			g2.drawString("Enter NBA Player Here", 180, 190);
 			loadImage("nbalogo");
-			g2.drawImage(fImage, 340, 400, this);
+			g2.drawImage(fImage, 340, 350, this);
+			loadImage("compare");
+			g2.drawImage(fImage, 340, 700, this);
+			// Draw rectangles
+			g2.setColor(Color.RED); // Set the color of the rectangles
+				//g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height); MANUALLY CHANGE
+			
 		}
 		// if the user has entered a name, show it
 		if (playerName != null) {
 			// Text
 			Font font = new Font("SansSerif", Font.BOLD, 60);
 			g2.setFont(font);
-			int textWidth = g2.getFontMetrics().stringWidth(playerName.toUpperCase()); // Calculate the width of the text
+			int textWidth = g2.getFontMetrics().stringWidth(playerName.toUpperCase()); // Calculate the width of the
+																						// text
 			int x = (getWidth() - textWidth) / 2; // Calculate the X coordinate to center the text horizontall
 			g2.drawString(playerName.toUpperCase(), x, 100); // Draw the text centered horizontally
 //			// Draw rectangles
@@ -205,8 +214,6 @@ public class FrontEnd extends JPanel {
 				g2.drawImage(fImage, 780, 755, this);
 				loadImage("return");
 				g2.drawImage(fImage, -140, -170, this);
-				
-				
 				textWidth = g2.getFontMetrics().stringWidth(mainStat); // Calculate the width of the text
 				x = (getWidth() - textWidth) / 2;
 				g2.drawString(mainStat, x, 175);
@@ -220,6 +227,8 @@ public class FrontEnd extends JPanel {
 				loadImage("return");
 				g2.drawImage(fImage, -140, -170, this);
 			}
+		} else if (comparePlayer == true) {
+			// new page HERE
 		}
 	}
 	private void loadImage(String input) {
