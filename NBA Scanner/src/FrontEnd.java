@@ -53,56 +53,12 @@ public class FrontEnd extends JPanel {
 			}
 		});
 		add(textField);
-		// Initialize buttons and their bounds
-		buttons = new HashMap<>();
-		buttons.put("m1n", new Rectangle(60, 305, 155, 58));
-		buttons.put("pts", new Rectangle(60, 380, 155, 58));
-		buttons.put("fgm", new Rectangle(60, 455, 155, 58));
-		buttons.put("fga", new Rectangle(60, 530, 155, 58));
-		buttons.put("fg_", new Rectangle(60, 605, 155, 58));
-		buttons.put("3pm", new Rectangle(60, 680, 155, 58));
-		buttons.put("3pa", new Rectangle(60, 755, 155, 58));
-		buttons.put("3p_", new Rectangle(240, 680, 155, 58));
-		buttons.put("ftm", new Rectangle(240, 755, 155, 58));
-		buttons.put("fta", new Rectangle(420, 680, 155, 58));
-		buttons.put("ft_", new Rectangle(420, 755, 155, 58));
-		buttons.put("gp", new Rectangle(600, 680, 155, 58));
-		buttons.put("reb", new Rectangle(600, 755, 155, 58));
-		buttons.put("ast", new Rectangle(780, 305, 155, 58));
-		buttons.put("stl", new Rectangle(780, 380, 155, 58));
-		buttons.put("blk", new Rectangle(780, 455, 155, 58));
-		buttons.put("tov", new Rectangle(780, 530, 155, 58));
-		buttons.put("eff", new Rectangle(780, 605, 155, 58));
-		buttons.put("oreb", new Rectangle(780, 680, 155, 58));
-		buttons.put("dreb", new Rectangle(780, 755, 155, 58));
-		buttons.put("return", new Rectangle(20, 30, 180, 100));
-		buttons.put("compare", new Rectangle(340, 700, 200, 100));
-		nums = new HashMap<>();
-		nums.put("m1n", 4);
-		nums.put("pts", 5);
-		nums.put("fgm", 6);
-		nums.put("fga", 7);
-		nums.put("fg_", 8);
-		nums.put("3pm", 9);
-		nums.put("3pa", 10);
-		nums.put("3p_", 11);
-		nums.put("ftm", 12);
-		nums.put("fta", 13);
-		nums.put("ft_", 14);
-		nums.put("gp", 3);
-		nums.put("reb", 17);
-		nums.put("ast", 18);
-		nums.put("stl", 19);
-		nums.put("blk", 20);
-		nums.put("tov", 21);
-		nums.put("eff", 22);
-		nums.put("oreb", 15);
-		nums.put("dreb", 16);
 		// Add mouse listener to handle button clicks
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// Check if the mouse click falls within any button bounds
+				if (showText == true || comparePlayer == true) {
 				for (String button : buttons.keySet()) {
 					Rectangle bounds = buttons.get(button);
 					if (bounds.contains(e.getPoint())) {
@@ -114,13 +70,18 @@ public class FrontEnd extends JPanel {
 							showText = false;
 							add(textField);
 							mainStat = "STAT";
+							comparePlayer = false;
 						} else if (button.equals("compare")) {
 							comparePlayer = true;
+							textField.setBounds(340, 500, 320, 40);
+							add(textField);
+							
 						} else {
 							displayStat(button);
 							break;
 						}
 					}
+				}
 				}
 			}
 		});
@@ -138,8 +99,10 @@ public class FrontEnd extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		Color c = new Color(44, 49, 91);
 		g2.setColor(c);
+		nums = new HashMap<>();
+		buttons = new HashMap<>();
+		//FRONT PAGE
 		if (showText == false) {
-			// front page
 			Font font = new Font("SansSerif", Font.BOLD, 60);
 			g2.setFont(font);
 			g2.drawString("Enter NBA Player Here", 180, 190);
@@ -147,30 +110,72 @@ public class FrontEnd extends JPanel {
 			g2.drawImage(fImage, 340, 350, this);
 			loadImage("compare");
 			g2.drawImage(fImage, 355, 650, this);
-			// Draw rectangles
-			g2.setColor(Color.RED); // Set the color of the rectangles
-				//g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height); MANUALLY CHANGE
-			
-		}
-		// if the user has entered a name, show it
-		if (playerName != null) {
-			// Text
-			Font font = new Font("SansSerif", Font.BOLD, 60);
-			g2.setFont(font);
-			int textWidth = g2.getFontMetrics().stringWidth(playerName.toUpperCase()); // Calculate the width of the
-																						// text
-			int x = (getWidth() - textWidth) / 2; // Calculate the X coordinate to center the text horizontally
-			g2.drawString(playerName.toUpperCase(), x, 100); // Draw the text centered horizontally
-			
-			// Draw rectangles
+			buttons.put("compare", new Rectangle(350, 650, 310, 90));
+			//DEBUG MODE
 			g2.setColor(Color.RED); // Set the color of the rectangles
 			for (String button : buttons.keySet()) {
 				Rectangle bounds = buttons.get(button);
 				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 			}
-			
+		}
+		//PAGE WITH ONE PLAYER
+		if (showText == true) {
+			Font font = new Font("SansSerif", Font.BOLD, 60);
+			g2.setFont(font);
+			int textWidth = g2.getFontMetrics().stringWidth(playerName.toUpperCase());
+			int x = (getWidth() - textWidth) / 2;
+			g2.drawString(playerName.toUpperCase(), x, 100);
 			// if player exists
-			if (checkPlayer(playerName)) {
+			if (checkPlayer(playerName) && comparePlayer == false) {
+				//bounds of each button
+				
+				buttons.put("m1n", new Rectangle(60, 305, 155, 58));
+				buttons.put("pts", new Rectangle(60, 380, 155, 58));
+				buttons.put("fgm", new Rectangle(60, 455, 155, 58));
+				buttons.put("fga", new Rectangle(60, 530, 155, 58));
+				buttons.put("fg_", new Rectangle(60, 605, 155, 58));
+				buttons.put("3pm", new Rectangle(60, 680, 155, 58));
+				buttons.put("3pa", new Rectangle(60, 755, 155, 58));
+				buttons.put("3p_", new Rectangle(240, 680, 155, 58));
+				buttons.put("ftm", new Rectangle(240, 755, 155, 58));
+				buttons.put("fta", new Rectangle(420, 680, 155, 58));
+				buttons.put("ft_", new Rectangle(420, 755, 155, 58));
+				buttons.put("gp", new Rectangle(600, 680, 155, 58));
+				buttons.put("reb", new Rectangle(600, 755, 155, 58));
+				buttons.put("ast", new Rectangle(780, 305, 155, 58));
+				buttons.put("stl", new Rectangle(780, 380, 155, 58));
+				buttons.put("blk", new Rectangle(780, 455, 155, 58));
+				buttons.put("tov", new Rectangle(780, 530, 155, 58));
+				buttons.put("eff", new Rectangle(780, 605, 155, 58));
+				buttons.put("oreb", new Rectangle(780, 680, 155, 58));
+				buttons.put("dreb", new Rectangle(780, 755, 155, 58));
+				buttons.put("return", new Rectangle(20, 30, 180, 100));
+				
+				//link the string to the stat
+				
+				nums.put("m1n", 4);
+				nums.put("pts", 5);
+				nums.put("fgm", 6);
+				nums.put("fga", 7);
+				nums.put("fg_", 8);
+				nums.put("3pm", 9);
+				nums.put("3pa", 10);
+				nums.put("3p_", 11);
+				nums.put("ftm", 12);
+				nums.put("fta", 13);
+				nums.put("ft_", 14);
+				nums.put("gp", 3);
+				nums.put("reb", 17);
+				nums.put("ast", 18);
+				nums.put("stl", 19);
+				nums.put("blk", 20);
+				nums.put("tov", 21);
+				nums.put("eff", 22);
+				nums.put("oreb", 15);
+				nums.put("dreb", 16);
+				
+				
+				//load the buttons and team
 				String team = getTeam(playerName);
 				loadImage(team);
 				g2.drawImage(fImage, (getWidth() - fImage.getWidth()) / 2, 200, this);
@@ -216,14 +221,18 @@ public class FrontEnd extends JPanel {
 				g2.drawImage(fImage, 780, 755, this);
 				loadImage("return");
 				g2.drawImage(fImage, -140, -170, this);
-				textWidth = g2.getFontMetrics().stringWidth(mainStat); // Calculate the width of the text
+				
+				//display the stat
+				textWidth = g2.getFontMetrics().stringWidth(mainStat);
 				x = (getWidth() - textWidth) / 2;
 				g2.drawString(mainStat, x, 175);
+			} else if (comparePlayer) {
+				//COMPARE PAGE
 			}
 			// else, the player does not exist
 			else {
 				String noPlayer = "Player does not exist.";
-				textWidth = g2.getFontMetrics().stringWidth(noPlayer); // Calculate the width of the text
+				textWidth = g2.getFontMetrics().stringWidth(noPlayer);
 				x = (getWidth() - textWidth) / 2;
 				g2.drawString(noPlayer, x, 400);
 				loadImage("return");
