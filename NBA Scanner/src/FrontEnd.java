@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 public class FrontEnd extends JPanel {
-	private JTextField textField; // Text field for user input
+	private JTextField textField;
 	private boolean showText;
 	private boolean comparePlayer;
 	private String playerName;
@@ -146,7 +146,7 @@ public class FrontEnd extends JPanel {
 			loadImage("nbalogo");
 			g2.drawImage(fImage, 340, 350, this);
 			loadImage("compare");
-			g2.drawImage(fImage, 340, 700, this);
+			g2.drawImage(fImage, 355, 650, this);
 			// Draw rectangles
 			g2.setColor(Color.RED); // Set the color of the rectangles
 				//g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height); MANUALLY CHANGE
@@ -159,15 +159,17 @@ public class FrontEnd extends JPanel {
 			g2.setFont(font);
 			int textWidth = g2.getFontMetrics().stringWidth(playerName.toUpperCase()); // Calculate the width of the
 																						// text
-			int x = (getWidth() - textWidth) / 2; // Calculate the X coordinate to center the text horizontall
+			int x = (getWidth() - textWidth) / 2; // Calculate the X coordinate to center the text horizontally
 			g2.drawString(playerName.toUpperCase(), x, 100); // Draw the text centered horizontally
-//			// Draw rectangles
-//			g2.setColor(Color.RED); // Set the color of the rectangles
-//			for (String button : buttons.keySet()) {
-//				Rectangle bounds = buttons.get(button);
-//				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-//			}
-			// if that player exists, load their team and stats
+			
+			// Draw rectangles
+			g2.setColor(Color.RED); // Set the color of the rectangles
+			for (String button : buttons.keySet()) {
+				Rectangle bounds = buttons.get(button);
+				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+			}
+			
+			// if player exists
 			if (checkPlayer(playerName)) {
 				String team = getTeam(playerName);
 				loadImage(team);
@@ -227,8 +229,6 @@ public class FrontEnd extends JPanel {
 				loadImage("return");
 				g2.drawImage(fImage, -140, -170, this);
 			}
-		} else if (comparePlayer == true) {
-			// new page HERE
 		}
 	}
 	private void loadImage(String input) {
