@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+
+
 public class FrontEnd extends JPanel {
 	private JTextField textField; // Text field for user input
 	private boolean showText;
 	private String playerName;
-	private String mainStat = "Stat";
+	private String mainStat = "STAT";
 	private BufferedImage fImage; // To hold the image
 	private HashMap<String, Rectangle> buttons; // Store buttons with their bounds
 	private HashMap<String, Integer> nums;
@@ -64,7 +66,7 @@ public class FrontEnd extends JPanel {
 		buttons.put("3p_", new Rectangle(240, 680, 155, 58));
 		buttons.put("ftm", new Rectangle(240, 755, 155, 58));
 		buttons.put("fta", new Rectangle(420, 680, 155, 58));
-		buttons.put("ft_", new Rectangle(420, 755, 155, 58)); 
+		buttons.put("ft_", new Rectangle(420, 755, 155, 58));
 		buttons.put("gp", new Rectangle(600, 680, 155, 58));
 		buttons.put("reb", new Rectangle(600, 755, 155, 58));
 		buttons.put("ast", new Rectangle(780, 305, 155, 58));
@@ -111,7 +113,7 @@ public class FrontEnd extends JPanel {
 							repaint();
 							showText = false;
 							add(textField);
-							mainStat = "Stat";
+							mainStat = "STAT";
 						} else {
 							displayStat(button);
 							break;
@@ -147,9 +149,9 @@ public class FrontEnd extends JPanel {
 			// Text
 			Font font = new Font("SansSerif", Font.BOLD, 60);
 			g2.setFont(font);
-			int textWidth = g2.getFontMetrics().stringWidth(playerName); // Calculate the width of the text
-			int x = (getWidth() - textWidth) / 2; // Calculate the X coordinate to center the text horizontally
-			g2.drawString(playerName, x, 100); // Draw the text centered horizontally
+			int textWidth = g2.getFontMetrics().stringWidth(playerName.toUpperCase()); // Calculate the width of the text
+			int x = (getWidth() - textWidth) / 2; // Calculate the X coordinate to center the text horizontall
+			g2.drawString(playerName.toUpperCase(), x, 100); // Draw the text centered horizontally
 //			// Draw rectangles
 //			g2.setColor(Color.RED); // Set the color of the rectangles
 //			for (String button : buttons.keySet()) {
