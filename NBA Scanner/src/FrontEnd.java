@@ -24,7 +24,7 @@ public class FrontEnd extends JPanel {
 	private JTextField textField; // Text field for user input
 	private boolean showText;
 	private String playerName;
-	private String mainStat = "100";
+	private String mainStat = "Stat";
 	private BufferedImage fImage; // To hold the image
 	private HashMap<String, Rectangle> buttons; // Store buttons with their bounds
 	private HashMap<String, Integer> nums;
@@ -111,6 +111,7 @@ public class FrontEnd extends JPanel {
 							repaint();
 							showText = false;
 							add(textField);
+							mainStat = "Stat";
 						} else {
 							displayStat(button);
 							break;
@@ -121,11 +122,10 @@ public class FrontEnd extends JPanel {
 		});
 	}
 	// Method to display stat corresponding to the clicked button
-	private String displayStat(String button) {
-		System.out.println(getStat(playerName, nums.get(button)));
+	private void displayStat(String button) {
 		String a = getStat(playerName, nums.get(button));
-		mainStat = a;
-		return a;
+		mainStat = a; // Update the mainStat
+		repaint(); // Request the panel to repaint itself
 	}
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -204,8 +204,10 @@ public class FrontEnd extends JPanel {
 				loadImage("return");
 				g2.drawImage(fImage, -140, -170, this);
 				
-				g2.drawString(mainStat, x, 150);
 				
+				textWidth = g2.getFontMetrics().stringWidth(mainStat); // Calculate the width of the text
+				x = (getWidth() - textWidth) / 2;
+				g2.drawString(mainStat, x, 175);
 			}
 			// else, the player does not exist
 			else {
