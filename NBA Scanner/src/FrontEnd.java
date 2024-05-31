@@ -301,10 +301,10 @@ public class FrontEnd extends JPanel {
 			g2.drawString(mainStat, mainStatX, 450);
 			g2.drawString(otherStat, otherStatX, 450);
 			g2.drawString("VS", vsX, 450);
-			buttons.put("m1n", new Rectangle(60, 305, 155, 58));
-			buttons.put("pts", new Rectangle(60, 380, 155, 58));
-			buttons.put("fgm", new Rectangle(60, 455, 155, 58));
-			buttons.put("fga", new Rectangle(60, 530, 155, 58));
+			buttons.put("m1n", new Rectangle(60, 830, 155, 58));
+			buttons.put("pts", new Rectangle(240, 830, 155, 58));
+			buttons.put("fgm", new Rectangle(420, 830, 155, 58));
+			buttons.put("fga", new Rectangle(600, 830, 155, 58));
 			buttons.put("fg_", new Rectangle(60, 605, 155, 58));
 			buttons.put("3pm", new Rectangle(60, 680, 155, 58));
 			buttons.put("3pa", new Rectangle(60, 755, 155, 58));
@@ -314,10 +314,10 @@ public class FrontEnd extends JPanel {
 			buttons.put("ft_", new Rectangle(420, 755, 155, 58));
 			buttons.put("gp", new Rectangle(600, 680, 155, 58));
 			buttons.put("reb", new Rectangle(600, 755, 155, 58));
-			buttons.put("ast", new Rectangle(780, 305, 155, 58));
-			buttons.put("stl", new Rectangle(780, 380, 155, 58));
-			buttons.put("blk", new Rectangle(780, 455, 155, 58));
-			buttons.put("tov", new Rectangle(780, 530, 155, 58));
+			buttons.put("ast", new Rectangle(780, 830, 155, 58));
+			buttons.put("stl", new Rectangle(240, 605, 155, 58));
+			buttons.put("blk", new Rectangle(420, 605, 155, 58));
+			buttons.put("tov", new Rectangle(600, 605, 155, 58));
 			buttons.put("eff", new Rectangle(780, 605, 155, 58));
 			buttons.put("oreb", new Rectangle(780, 680, 155, 58));
 			buttons.put("dreb", new Rectangle(780, 755, 155, 58));
@@ -344,13 +344,13 @@ public class FrontEnd extends JPanel {
 			nums.put("dreb", 16);
 			// load the buttons
 			loadImage("m1n");
-			g2.drawImage(fImage, 60, 305, this);
+			g2.drawImage(fImage, 60, 830, this);
 			loadImage("pts");
-			g2.drawImage(fImage, 60, 380, this);
+			g2.drawImage(fImage, 240, 830, this);
 			loadImage("fgm");
-			g2.drawImage(fImage, 60, 455, this);
+			g2.drawImage(fImage, 420, 830, this);
 			loadImage("fga");
-			g2.drawImage(fImage, 60, 530, this);
+			g2.drawImage(fImage, 600, 830, this);
 			loadImage("fg");
 			g2.drawImage(fImage, 60, 605, this);
 			loadImage("3pm");
@@ -370,13 +370,13 @@ public class FrontEnd extends JPanel {
 			loadImage("reb");
 			g2.drawImage(fImage, 600, 755, this);
 			loadImage("ast");
-			g2.drawImage(fImage, 780, 305, this);
+			g2.drawImage(fImage, 780, 830, this);
 			loadImage("stl");
-			g2.drawImage(fImage, 780, 380, this);
+			g2.drawImage(fImage, 240, 605, this);
 			loadImage("blk");
-			g2.drawImage(fImage, 780, 455, this);
+			g2.drawImage(fImage, 420, 605, this);
 			loadImage("tov");
-			g2.drawImage(fImage, 780, 530, this);
+			g2.drawImage(fImage, 600,605, this);
 			loadImage("eff");
 			g2.drawImage(fImage, 780, 605, this);
 			loadImage("oreb");
@@ -384,12 +384,12 @@ public class FrontEnd extends JPanel {
 			loadImage("dreb");
 			g2.drawImage(fImage, 780, 755, this);
 			loadImage("return");
-//			// DEBUG MODE: Drawing red rectangles around buttons
-//			g2.setColor(Color.RED);
-//			for (String button : buttons.keySet()) {
-//				Rectangle bounds = buttons.get(button);
-//				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-//			}
+			// DEBUG MODE: Drawing red rectangles around buttons
+			g2.setColor(Color.RED);
+			for (String button : buttons.keySet()) {
+				Rectangle bounds = buttons.get(button);
+				g2.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+			}
 //			// END DEBUG MODE
 		}
 		// ERROR PAGE
